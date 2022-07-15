@@ -21,12 +21,6 @@ const FeedbackSchema = new Schema(
         ref: "Comment",
       },
     ],
-    votes: [
-      {
-        type: Schema.Types.ObjectId,
-        ref: "Vote",
-      },
-    ],
   },
   {
     timestamps: true,

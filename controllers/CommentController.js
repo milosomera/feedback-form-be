@@ -1,25 +1,23 @@
 import Comment from "../models/Comment.js";
 import Feedback from "../models/Feedback.js";
 
-const allComments = (req, res) => {
-  console.log("Comment route test.");
-  res.send("Comment route test.");
+const allComments = async (req, res) => {
+  const comments = await Comment.find({});
+  res.send(comments);
 };
 
-// req.body.feedback === feedback._id
-const addComment = (req, res) => {
-  const { user, text, feedback } = req.body;
-  let comment = new Comment();
-  comment.user = user;
-  comment.text = text;
-  comment.feedback = feedback;
-  comment.save().then((comment) => {
-    Feedback.findById(feedback).then((feedback) => {
-      feedback.comments.push(comment._id);
-      feedback.save();
-      res.send(comment);
-    });
+const addComment = async (req, res) => {
+  const { user, text, feedback_id } = req.body;
+  const comment = new Comment({
+    user,
+    text,
+    feedback_id,
   });
+  await comment.save();
+  const feedback = await Feedback.findById(feedback_id);
+  feedback.comments.push(comment._id);
+  await feedback.save();
+  res.send(comment);
 };
 
-export { allComments, addComment };
+export { addComment, allComments };

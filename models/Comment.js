@@ -11,7 +11,7 @@ const CommentSchema = new Schema(
       type: String,
       required: true,
     },
-    feedback: {
+    feedback_id: {
       type: Schema.Types.ObjectId,
       ref: "Feedback",
     },
