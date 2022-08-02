@@ -9,15 +9,19 @@ const registerUser = async (req, res) => {
     res.send({ error: "User already exists." });
   } else {
     bcrypt.hash(password, 12, async (err, hash) => {
-      if (err) throw err;
-      const newUser = new User({
-        name,
-        email,
-        password: hash,
-      });
-      await newUser.save();
-      res.status(201);
-      res.send(newUser);
+      try {
+        const newUser = new User({
+          name,
+          email,
+          password: hash,
+        });
+        await newUser.save();
+        res.status(201);
+        res.send(newUser);
+      } catch (err) {
+        res.status(400);
+        res.send(err);
+      }
     });
   }
 };
